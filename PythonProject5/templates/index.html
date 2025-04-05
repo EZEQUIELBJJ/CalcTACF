@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACF - Calculadora de Avaliação Física</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- CSS Personalizado -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Cabeçalho -->
+        <header class="text-center mb-4">
+            <img src="{{ url_for('static', filename='images/logo-tacf.png') }}" alt="Logo TACF" class="logo mb-3">
+            <h1 class="display-5 fw-bold text-center">
+                Calculadora de Avaliação Física
+                <br>
+                TACF
+            </h1>
+            <p class="lead text-center">Teste de Avaliação do Condicionamento Físico</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 rounded">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <i class="fas fa-calculator me-2"></i>Calculadora TACF
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#sobreModal">
+                                <i class="fas fa-info-circle me-1"></i> Sobre
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                        {% if category == 'error' %}
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                        {% elif category == 'warning' %}
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                        {% elif category == 'success' %}
+                            <i class="fas fa-check-circle me-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle me-2"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulário Principal -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>
+                    Formulário de Avaliação
+                </h5>
+            </div>
+            <form id="tacf-form" method="post" action="{{ url_for('index') }}">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Dados Pessoais -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Dados Pessoais</h5>
+
+                            <div class="mb-3">
+                                <label for="genero" class="form-label">Gênero</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                    <select class="form-select" id="genero" name="genero" required>
+                                        <option value="" selected disabled>Selecione...</option>
+                                        <option value="masculino">Masculino</option>
+                                        <option value="feminino">Feminino</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="idade" class="form-label">Idade (anos)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                    <input type="number" class="form-control" id="idade" name="idade" min="16" max="80" required placeholder="Ex: 25">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Idade entre 16 e 80 anos">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="estatura" class="form-label">Estatura (cm)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-ruler-vertical"></i></span>
+                                    <input type="number" step="0.1" class="form-control" id="estatura" name="estatura" min="140" max="220" required placeholder="Ex: 175.0">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Altura em centímetros. Exemplo: 175 cm">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cintura" class="form-label">Circunferência da Cintura (cm)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-ruler-horizontal"></i></span>
+                                    <input type="number" step="0.1" class="form-control" id="cintura" name="cintura" min="50" max="150" required placeholder="Ex: 85.0">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Medida horizontal da cintura na altura do umbigo">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testes Físicos -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Testes Físicos</h5>
+
+                            <div class="mb-3">
+                                <label for="flexoes" class="form-label">Flexões (repetições)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-dumbbell"></i></span>
+                                    <input type="number" class="form-control" id="flexoes" name="flexoes" min="0" required placeholder="Ex: 25">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Número máximo de flexões realizadas corretamente">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="abdominais" class="form-label">Abdominais (repetições)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-running"></i></span>
+                                    <input type="number" class="form-control" id="abdominais" name="abdominais" min="0" required placeholder="Ex: 35">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Número máximo de abdominais realizados corretamente">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="corrida" class="form-label">Corrida (distância em 12 minutos)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-route"></i></span>
+                                    <input type="number" class="form-control" id="corrida" name="corrida" required placeholder="Ex: 2400" min="1000" max="5000" step="10">
+                                    <span class="input-group-text">metros</span>
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Distância percorrida em 12 minutos (metros)">
+                                        <i class="fas fa-question-circle info-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a href="{{ url_for('limpar') }}" class="btn btn-secondary btn-action" id="btn-limpar">
+                                    <i class="fas fa-eraser me-1"></i> Limpar
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-action" id="btn-calcular">
+                                    <i class="fas fa-calculator me-1"></i> Calcular
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal Sobre -->
+        <div class="modal fade" id="sobreModal" tabindex="-1" aria-labelledby="sobreModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sobreModalLabel">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Sobre o TACF
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>O <strong>Teste de Avaliação do Condicionamento Físico (TACF)</strong> é uma ferramenta utilizada para medir o nível de condicionamento físico, baseada no documento NSCA 54-1 DEZ 2024.</p>
+
+                        <h6 class="mt-4"><i class="fas fa-clipboard-check me-2"></i>Testes Realizados:</h6>
+                        <ul>
+                            <li><strong>Circunferência da Cintura:</strong> Medida horizontal da cintura na altura do umbigo.</li>
+                            <li><strong>Flexões:</strong> Número máximo de flexões realizadas corretamente.</li>
+                            <li><strong>Abdominais:</strong> Número máximo de abdominais realizados corretamente.</li>
+                            <li><strong>Corrida de 12 minutos:</strong> Distância máxima percorrida em 12 minutos.</li>
+                        </ul>
+
+                        <h6 class="mt-4"><i class="fas fa-award me-2"></i>Conceitos:</h6>
+                        <ul>
+                            <li><strong>E - Excelente:</strong> 90 a 100 pontos</li>
+                            <li><strong>MB - Muito Bom:</strong> 70 a 89.9 pontos</li>
+                            <li><strong>B - Bom:</strong> 50 a 69.9 pontos</li>
+                            <li><strong>R - Regular:</strong> 20 a 49.9 pontos</li>
+                            <li><strong>I - Insuficiente:</strong> 0 a 19.9 pontos</li>
+                        </ul>
+
+                        <p class="mt-4">Esta calculadora utiliza as tabelas oficiais para calcular sua pontuação com base nas faixas etárias, gênero e desempenho nos testes.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="text-center mt-5">
+            <p>&copy; 2024 TACF - Calculadora do Teste de Avaliação do Condicionamento Físico</p>
+            <p>Baseado nas tabelas do documento NSCA 54-1 DEZ 2024</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle com Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script personalizado -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "tacf-calculator"
+version = "0.1.0"
+description = "Calculadora do Teste de Avaliação do Condicionamento Físico"
+authors = ["Ezequiel Medeiros <ezequielbjj20@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "^2.0.0"
+flask-sqlalchemy = "^3.0.0"
+email-validator = "^1.1.0"
+gunicorn = "^20.1.0"
+psycopg2-binary = "^2.9.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

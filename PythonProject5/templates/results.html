@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACF - Resultados da Avaliação</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- CSS Personalizado -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Cabeçalho -->
+        <header class="text-center mb-4">
+            <img src="{{ url_for('static', filename='images/logo app CalcTACF.png') }}" alt="Logo TACF" class="logo mb-3">
+            <h1 class="display-5 fw-bold text-center">
+                Calculadora de Avaliação Física
+                <br>
+                TACF
+            </h1>
+            <p class="lead text-center">Resultados da Avaliação</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 rounded">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <i class="fas fa-calculator me-2"></i>Calculadora TACF
+                </a>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">
+                            <i class="fas fa-arrow-left me-1"></i> Voltar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Resumo dos Dados Informados -->
+        <div class="card mb-4 animate-in">
+            <div class="card-header bg-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-circle me-2"></i>
+                    Dados Informados
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-venus-mars me-2"></i> Gênero:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.genero|capitalize }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-birthday-cake me-2"></i> Idade:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.idade }} anos</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-ruler-vertical me-2"></i> Estatura:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.estatura }} cm</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-ruler-horizontal me-2"></i> Cintura:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.cintura }} cm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-dumbbell me-2"></i> Flexões:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.flexoes }} repetições</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-running me-2"></i> Abdominais:</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.abdominais }} repetições</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-route me-2"></i> Distância Corrida (12 min):</span>
+                                <span class="badge bg-info rounded-pill">{{ dados.corrida_distancia }} metros</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados da Avaliação -->
+        <div class="results-container animate-in">
+            <h2 class="mb-4">
+                <i class="fas fa-chart-bar me-2"></i>
+                Resultado da Avaliação
+            </h2>
+
+            <!-- Cards de Pontuação -->
+            <div class="row score-cards-row">
+                <!-- Cintura -->
+                <div class="col-md-3 mb-3">
+                    <div class="card score-card">
+                        <div class="card-header bg-dark text-center">
+                            <i class="fas fa-ruler-horizontal me-1"></i> Cintura
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="score-value text-{{ resultado.pontos_cintura|cor_pontuacao }}">
+                                {{ resultado.pontos_cintura }}
+                            </div>
+                            <div class="score-label">pontos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flexões -->
+                <div class="col-md-3 mb-3">
+                    <div class="card score-card">
+                        <div class="card-header bg-dark text-center">
+                            <i class="fas fa-dumbbell me-1"></i> Flexões
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="score-value text-{{ resultado.pontos_flexao|cor_pontuacao }}">
+                                {{ resultado.pontos_flexao }}
+                            </div>
+                            <div class="score-label">pontos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abdominais -->
+                <div class="col-md-3 mb-3">
+                    <div class="card score-card">
+                        <div class="card-header bg-dark text-center">
+                            <i class="fas fa-running me-1"></i> Abdominais
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="score-value text-{{ resultado.pontos_abdominal|cor_pontuacao }}">
+                                {{ resultado.pontos_abdominal }}
+                            </div>
+                            <div class="score-label">pontos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Corrida -->
+                <div class="col-md-3 mb-3">
+                    <div class="card score-card">
+                        <div class="card-header bg-dark text-center">
+                            <i class="fas fa-route me-1"></i> Corrida
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="score-value text-{{ resultado.pontos_corrida|cor_pontuacao }}">
+                                {{ resultado.pontos_corrida }}
+                            </div>
+                            <div class="score-label">pontos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pontuação Total e Conceito -->
+            <div class="card mb-4 mt-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start">
+                            <h4>Pontuação Total</h4>
+                            <div class="total-score">{{ resultado.pontuacao_total }} <small>/ 100</small></div>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                            <h4>Conceito Final</h4>
+                            <span class="badge conceito-badge bg-{{ resultado.conceito|cor_conceito }}">
+                                {{ resultado.conceito }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Barras -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Distribuição de Pontos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-3">Cintura</div>
+                        <div class="col-9">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-{{ resultado.pontos_cintura|cor_pontuacao }}" role="progressbar"
+                                    style="width: {{ (resultado.pontos_cintura/10*100) if resultado.pontos_cintura <= 10 else 100 }}%;"
+                                    aria-valuenow="{{ resultado.pontos_cintura }}" aria-valuemin="0" aria-valuemax="10">
+                                    {{ resultado.pontos_cintura }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-3">Flexões</div>
+                        <div class="col-9">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-{{ resultado.pontos_flexao|cor_pontuacao }}" role="progressbar"
+                                    style="width: {{ (resultado.pontos_flexao/10*100) if resultado.pontos_flexao <= 10 else 100 }}%;"
+                                    aria-valuenow="{{ resultado.pontos_flexao }}" aria-valuemin="0" aria-valuemax="10">
+                                    {{ resultado.pontos_flexao }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-3">Abdominais</div>
+                        <div class="col-9">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-{{ resultado.pontos_abdominal|cor_pontuacao }}" role="progressbar"
+                                    style="width: {{ (resultado.pontos_abdominal/10*100) if resultado.pontos_abdominal <= 10 else 100 }}%;"
+                                    aria-valuenow="{{ resultado.pontos_abdominal }}" aria-valuemin="0" aria-valuemax="10">
+                                    {{ resultado.pontos_abdominal }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-3">Corrida</div>
+                        <div class="col-9">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-{{ resultado.pontos_corrida|cor_pontuacao }}" role="progressbar"
+                                    style="width: {{ (resultado.pontos_corrida/10*100) if resultado.pontos_corrida <= 10 else 100 }}%;"
+                                    aria-valuenow="{{ resultado.pontos_corrida }}" aria-valuemin="0" aria-valuemax="10">
+                                    {{ resultado.pontos_corrida }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-3">Total</div>
+                        <div class="col-9">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                    style="width: {{ resultado.pontuacao_total }}%;"
+                                    aria-valuenow="{{ resultado.pontuacao_total }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ resultado.pontuacao_total }} / 100
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg me-md-2">
+                    <i class="fas fa-redo me-1"></i> Nova Avaliação
+                </a>
+                <button class="btn btn-primary btn-lg" onclick="window.print()">
+                    <i class="fas fa-print me-1"></i> Imprimir Resultados
+                </button>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="text-center mt-5">
+            <p>&copy; 2024 TACF - Calculadora do Teste de Avaliação do Condicionamento Físico</p>
+            <p>Baseado nas tabelas do documento NSCA 54-1 DEZ 2024</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle com Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script personalizado -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
