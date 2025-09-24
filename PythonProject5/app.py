@@ -138,7 +138,7 @@ def cor_conceito ( conceito ) :
     """
     if conceito.startswith( 'I' ) :
         return 'danger'  # Vermelho
-    elif conceito.startswith( 'R' ) :
+    elif conceito.startswith( 'S' ) :
         return 'warning'  # Amarelo
     elif conceito.startswith( 'B' ) :
         return 'info'  # Azul
@@ -146,3 +146,4 @@ def cor_conceito ( conceito ) :
         return 'primary'  # Azul escuro
     else :
         return 'success'  # Verde
+
