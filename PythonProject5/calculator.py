@@ -754,7 +754,7 @@ def calcular_conceito(pontuacao_total, pontos_exercicios=None):
     # Verifica se a pontuação mínima total foi atingida
     if pontuacao_total < 20:
         return "I - Insuficiente"
-    elif pontuacao_total < 50:
+    elif pontuacao_total < 40:
         return "S - Satifastório"
     elif pontuacao_total < 70:
         return "B - Bom"
@@ -802,4 +802,5 @@ def calcular_tacf ( genero, idade, estatura, cintura, flexoes, abdominais, corri
     }
 
     return resultado
+
 
