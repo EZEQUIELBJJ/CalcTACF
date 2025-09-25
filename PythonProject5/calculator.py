@@ -916,9 +916,9 @@ def calcular_conceito ( pontuacao_total ) :
     Calcula o conceito com base na pontuação total.
     """
     if pontuacao_total < 20 :
-        return "I - Insuficiente"
-    elif pontuacao_total < 50 :
-        return "R - Regular"
+        return "I - Insatisfatório"
+    elif pontuacao_total < 40 :
+        return "S - Satisfatório"
     elif pontuacao_total < 70 :
         return "B - Bom"
     elif pontuacao_total < 90 :
@@ -964,3 +964,4 @@ def calcular_tacf ( genero, idade, estatura, cintura, flexoes, abdominais, corri
     }
 
     return resultado
+
